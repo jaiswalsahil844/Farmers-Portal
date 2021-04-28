@@ -136,7 +136,20 @@ app.post('/create', upload.single('image') , function (req, res) {
     }
 });
 
+//PRODUCTS PAGE
+app.get('/products', async (req, res)=>{
+    if (!req.isAuthenticated()) {
+        res.render("register.ejs");
+    }
+    else {
+        let products = await Post.find();
+        // res.send(products)
+        res.render("products.ejs",{
+        products: products
+    })
+    }
 
+})
 
 http.listen(3000, function () {
     console.log('listening on : 3000');

@@ -10,9 +10,12 @@ var userSchema = new mongoose.Schema({
     phoneNumber: String,
     dob: String,
     type: String,
-    groupList: [{
-        type: String
-    }]
+    posts: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Post"
+        }
+    ]
 });
 userSchema.plugin(passportLocalMongoose);
 var User = mongoose.model('User', userSchema);

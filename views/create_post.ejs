@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <title>Add Product</title>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Farmer | Buyer</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="./homeFarmer.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container">
+
+        <form enctype="multipart/form-data" action="/create" method="POST">
+
+            <div class="input-group mb-3" style="margin-top: 80px;">
+                <div class="input-group-prepend">
+                    <label class="input-group-text">Add Product</label>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="category" class="col-sm-2 col-form-label">Enter Category</label>
+                <div class="col-sm-10">
+                    <select name="category" class="custom-select" id="select" onchange="yesnoCheck();">
+                        <option selected>Choose...</option>
+                        <option value="Fruits">Fruits</option>
+                        <option value="Vegetables">Vegetables</option>
+                        <option value="Oils">Oils</option>
+                        <option value="Dairy Products">Dairy Products</option>
+                        <option value="Millets">Millets</option>
+                        <option value="None of the above">None of the above</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row" id="hideField" style="display:none;">
+                <label for="addCategory" class="col-sm-2 col-form-label">Add Category</label>
+                <div class="col-sm-10">
+                    <input name="addCategory" type="text" class="form-control" id="addCategory"
+                           placeholder="Add Category">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="product" class="col-sm-2 col-form-label">Enter Product </label>
+                <div class="col-sm-10">
+                    <input name="product" type="text" class="form-control" id="product" placeholder="Product Name">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="quantity" class="col-sm-2 col-form-label">Enter Quantity </label>
+                <div class="col-sm-7">
+                    <input name="quantity" type="number" class="form-control" id="quantity" placeholder="Quantity">
+                </div>
+                <div class="col-sm-3">
+                    <select name="quantity_unit" class="custom-select">
+                        <option value="in litres"> in litres </option>
+                        <option value="in kg"> in kg </option>
+                        <option value="in grams"> in grams </option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="address" class="col-sm-2 col-form-label">Enter Estimated Price</label>
+                <div class="col-sm-7">
+                    <input name="price" type="number" class="form-control" id="price" placeholder="Estimated Price">
+                </div>
+                <div class="col-sm-3">
+                    <select name="price_unit" class="custom-select">
+                        <option value="per litre"> per litre </option>
+                        <option value="per kg"> per kg </option>
+                        <option value="per gram"> per gram </option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group row">
+                <label for="description" class="col-sm-2 col-form-label">Enter Description</label>
+                <div class="col-sm-10">
+                    <input name="description" type="text" class="form-control" id="desciption" placeholder="Description">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="addImage" class="col-sm-2 col-form-label">Add Image</label>
+                <div class="col-sm-4">
+                    <input type="file" id="addImage" name="image" accept="image/*" onchange="readURL(this);">
+                </div>
+                <div class="col-sm-3">
+                    <img id="blah" />
+                </div>
+            </div>
+            <button name="submit" type="submit" class="btn btn-success">Add Product</button>
+            <button name="reset" type="reset" class="btn btn-danger">Reset</button>
+        </form>
+    </div>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+            crossorigin="anonymous"></script>
+
+    <script>
+        function yesnoCheck() {
+            var selectedItem = document.getElementById("select");
+            //console.log(selectedItem);
+            console.log(selectedItem.selectedIndex);
+            if (selectedItem.selectedIndex == 6) {
+                document.getElementById("hideField").style.removeProperty('display');
+            }
+            else {
+                document.getElementById("hideField").style.display = "none";
+            }
+        }
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    $('#blah')
+                        .attr('src', e.target.result)
+                        .width(150)
+                        .height(200);
+                };
+
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    </script>
+</body>
+
+</html>

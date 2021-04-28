@@ -5,7 +5,7 @@
   "main": "server.js",
   "author": "sohail",
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon server.js"
   },
   "license": "ISC",
   "dependencies": {

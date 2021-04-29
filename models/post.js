@@ -18,7 +18,7 @@ var postSchema = new mongoose.Schema({
         name: String
     }
 });
-postSchema.plugin(passportLocalMongoose);
+// postSchema.plugin(passportLocalMongoose);
 var Post = mongoose.model('Post', postSchema);
 
 module.exports = Post;

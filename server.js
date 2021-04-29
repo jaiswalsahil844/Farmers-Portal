@@ -33,12 +33,25 @@ mongoose.connect("mongodb+srv://sohail:pokemon@cluster0.bvvzh.mongodb.net/myFirs
 // HOMEPAGE REDIRECT TO REGISTER
 app.get('/', (req, res) => {
     if (!req.isAuthenticated()) {
-        res.render("register.ejs");
-    }
-    else {
+        // res.render("register.ejs");
         res.redirect('/index');
     }
+    else {
+
+        if(req.user.type=="Farmer"){
+            res.redirect('/index_farmer');
+        }
+        else{
+            res.redirect('/index_buyer');
+        }
+        
+    }
 });
+
+app.get("/register", (req,res)=>{
+
+    res.render("register.ejs")
+})
 
 // LOGIN PAGE
 app.get('/login', function (req, res) {
@@ -85,10 +98,10 @@ app.get('/index', (_req, res) => {
         res.render("index");
     }
     else if (_req.user.type == "Farmer") {
-        res.render("index_buyer");
+        res.render("index_farmer");
     }
     else {
-        res.render("index_farmer");
+        res.render("index_buyer");
     }
 });
 
@@ -183,6 +196,16 @@ app.get('/myproducts', async (req, res)=>{
         products: products
         })
     }
+
+})
+
+//PROFILE
+
+app.get("/profile", async (req, res)=>{
+
+    let user = await User.find({username: req.user.username});
+
+    res.send(user)
 
 })
 

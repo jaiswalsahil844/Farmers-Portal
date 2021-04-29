@@ -29,7 +29,7 @@
             padding: 50px;
         }
     </style>
-    <title>View Products</title>
+    <title>Profile</title>
 </head>
 
 <body>
@@ -43,7 +43,7 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="./index">Home</a>
+                    <a class="nav-link" href="#">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Features</a>
@@ -54,41 +54,52 @@
             </ul>
         </div>
     </nav>
-    
-    <div class="container mt-4">
-        <div class="row">
-
-            <% for(let i=0; i < products.length; i++) {%>
-                <div class="col-auto mb-3">
-                    <div class="card" style="width: 18rem;">
-                        <% let
-                            obj={Fruits: "http://www.globaltimes.cn/Portals/0/attachment/2011/d41d2c60-db4b-4dcb-ae19-8fe5e5b9e52c.jpg"
-                            , Vegetables:"https://i.pinimg.com/originals/f8/79/7e/f8797e816adf5c52306426100d830a95.jpg",
-                            Oils:"https://www.etipbioenergy.eu/images/Starch%20Crops%20pictures/Sonnenblumenfeld.jpg?1510229915942",
-                            Millets:"https://www.etipbioenergy.eu/images/Starch%20Crops%20pictures/Sonnenblumenfeld.jpg?1510229915942", "Dairy Products"
-                            :"https://i.ytimg.com/vi/p_rtdPtdmAU/maxresdefault.jpg"} %>
-                            <% let crop=products[i].category %>
-                                <img class="card-img-top" src="<%= obj[crop] %>" alt="Card image cap">
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        <%= products[i].category %>
-                                    </h5>
-                                    <h5 class="card-title">
-                                        <%= products[i].product %>
-                                    </h5>
-                                    <h6 class="card-subtitle mb-2 text-muted">
-                                        <%= products[i].price %>
-                                    </h6>
-                                    <p class="card-text">
-                                        <%= products[i].description %>
-                                    </p>
-                                    <a href="#" class="card-link">Card link</a>
-                                    <a href="#" class="card-link">Another link</a>
-                                </div>
+      
+    <div class="container">
+        <form>
+            <div class="row pt-4 pb-4" style="background-image: none;">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6 pt-3 bg-light text-dark border">
+                    <div class="form-group row">
+                        <label for="firstName" class="col-sm-4 col-form-label">First Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control-plaintext" value="<%= user[0].firstName %>">                                
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="lastName" class="col-sm-4 col-form-label">Last Name</label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control-plaintext" value="<%= user[0].lastName %>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="address" class="col-sm-4 col-form-label">Address</label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control-plaintext" value="<%= user[0].address %>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="phoneNumber" class="col-sm-4 col-form-label">Phone Number</label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control-plaintext" value="<%= user[0].phoneNumber %>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="dob" class="col-sm-4 col-form-label">Date Of Birth</label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control-plaintext" value="<%= user[0].dob %>">
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label for="email" class="col-sm-4 col-form-label">Email Address</label>
+                        <div class="col-sm-8">
+                            <input type="text" readonly class="form-control-plaintext" value="<%= user[0].username %>">
+                        </div>
                     </div>
                 </div>
-                <% } %>
-        </div>
+                <div class="col-sm-3"></div>
+            </div>
+        </form>
     </div>
 
     <footer class="container-fluid text-center pt-5">

@@ -194,7 +194,10 @@ app.get("/profile", async (req, res)=>{
 
     let user = await User.find({username: req.user.username});
 
-    res.send(user)
+    // res.send(user)
+    res.render("profile.ejs", {
+        user: user
+    })
 
 })
 

@@ -164,6 +164,30 @@ app.get('/products', async (req, res) => {
 
 })
 
+app.get('/myproducts', async (req, res)=>{
+    if (!req.isAuthenticated()) {
+        res.render("register.ejs");
+    }
+    else {
+        console.log(req.user.username)
+        let user = await User.find({username: req.user.username});
+        console.log(user[0].posts)
+        let productIds = user[0].posts;
+        let products = [];
+        for(let i=0;i<productIds.length;i++){
+            console.log(productIds[i]);
+            let product = await Post.findById(productIds[i]);
+            console.log(product)
+            products.push(product);
+        }
+        // res.send(products)
+        res.render("products.ejs",{
+        products: products
+        })
+    }
+
+})
+
 //PROFILE
 
 app.get("/profile", async (req, res)=>{

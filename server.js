@@ -151,49 +151,14 @@ app.post('/create', upload.single('image'), function (req, res) {
 
 //PRODUCTS PAGE
 app.get('/products', async (req, res) => {
-
-    let products = await Post.find();
-    if (!req.isAuthenticated()) {
-        res.render("products.ejs", {
-            products: products
-        })
-    }
-    else {
-        // res.send(products)
-
-        if(req.user.type != "Farmer"){
-            res.render("buyer_products.ejs", {
-                products: products
-            })
-        }
-        else{
-            res.render("products.ejs", {
-                products: products
-            })
-        }
-    }
-
-})
-
-app.get('/myproducts', async (req, res)=>{
     if (!req.isAuthenticated()) {
         res.render("register.ejs");
     }
     else {
-        console.log(req.user.username)
-        let user = await User.find({username: req.user.username});
-        console.log(user[0].posts)
-        let productIds = user[0].posts;
-        let products = [];
-        for(let i=0;i<productIds.length;i++){
-            console.log(productIds[i]);
-            let product = await Post.findById(productIds[i]);
-            console.log(product)
-            products.push(product);
-        }
+        let products = await Post.find();
         // res.send(products)
-        res.render("products.ejs",{
-        products: products
+        res.render("products.ejs", {
+            products: products
         })
     }
 

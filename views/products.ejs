@@ -61,26 +61,33 @@
             <% for(let i=0; i < products.length; i++) {%>
                 <div class="col-auto mb-3">
                     <div class="card" style="width: 18rem;">
-                        <img class="card-img-top"
-                            src="https://media.nationalgeographic.org/assets/photos/120/983/091a0e2f-b93d-481b-9a60-db520c87ec33.jpg"
-                            alt="Card image cap">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <%= products[i].category %>
-                            </h5>
-                            <h6 class="card-subtitle mb-2 text-muted">
-                                <%= products[i].price %>
-                            </h6>
-                            <p class="card-text">
-                                <%= products[i].description %>
-                            </p>
-                            <a href="#" class="card-link">Card link</a>
-                            <a href="#" class="card-link">Another link</a>
-                        </div>
+                        <% let
+                            obj={Fruits: "http://www.globaltimes.cn/Portals/0/attachment/2011/d41d2c60-db4b-4dcb-ae19-8fe5e5b9e52c.jpg"
+                            , Vegetables:"https://i.pinimg.com/originals/f8/79/7e/f8797e816adf5c52306426100d830a95.jpg",
+                            Oils:"https://www.etipbioenergy.eu/images/Starch%20Crops%20pictures/Sonnenblumenfeld.jpg?1510229915942",
+                            Millets:"https://www.etipbioenergy.eu/images/Starch%20Crops%20pictures/Sonnenblumenfeld.jpg?1510229915942", "Dairy Products"
+                            :"https://i.ytimg.com/vi/p_rtdPtdmAU/maxresdefault.jpg"} %>
+                            <% let crop=products[i].category %>
+                                <img class="card-img-top" src="<%= obj[crop] %>" alt="Card image cap">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <%= products[i].category %>
+                                    </h5>
+                                    <h5 class="card-title">
+                                        <%= products[i].product %>
+                                    </h5>
+                                    <h6 class="card-subtitle mb-2 text-muted">
+                                        <%= products[i].price %>
+                                    </h6>
+                                    <p class="card-text">
+                                        <%= products[i].description %>
+                                    </p>
+                                    <a href="#" class="card-link">Card link</a>
+                                    <a href="#" class="card-link">Another link</a>
+                                </div>
                     </div>
                 </div>
                 <% } %>
-
         </div>
     </div>
 

@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
 
 <head>
@@ -37,6 +37,15 @@
     </nav>
 
     <div class="container">
+
+        <% if (typeof flag != 'undefined') { %>
+            <% if (flag == 0) { %>
+                <p class="p-3 mb-2 bg-danger text-light">Failed</p>
+            <% } %>
+            <% if (flag == 1) { %>
+                <p class="p-3 mb-2 bg-success text-light">Success</p>
+            <% } %>
+        <% } %>
 
         <form enctype="multipart/form-data" action="/create" method="POST">
 

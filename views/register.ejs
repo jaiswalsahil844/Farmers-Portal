@@ -29,6 +29,10 @@
                 </select>
             </div>
 
+            <% if (typeof flag != 'undefined' && flag==1) { %>
+                <p class="p-3 mb-2 bg-danger text-light">Email is already used</p>
+            <% } %>
+
             <div class="form-group row">
                 <label for="firstName" class="col-sm-2 col-form-label">First Name</label>
                 <div class="col-sm-10">

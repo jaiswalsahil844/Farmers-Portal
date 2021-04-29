@@ -55,7 +55,7 @@ app.post('/login', passport.authenticate("local", {
     successRedirect: "/index",
     failureRedirect: "/login"
 }), function (req, res) {
-
+        console.log("HELLO");
 });
 
 app.post('/register', function (req, res) {
@@ -70,14 +70,13 @@ app.post('/register', function (req, res) {
             type: req.body.type
         }
         , req.body.password, function (err, user) {
-        if (err) {
-            console.log("HELLO");
-            res.redirect('/');
-        }
-        else {
-            res.redirect('/login');
-        }
-    });
+            if (err) {
+                res.render('register', { flag : 1 });
+            }
+            else {
+                res.redirect('/login');
+            }
+        });
 });
 
 // INDEX PAGE CONSIST OF LIST OF GROUPS
@@ -100,12 +99,12 @@ app.get('/logout', function (req, res) {
 
 // CREATE NEW POST
 app.get('/create', function (req, res) {
-    if (req.isAuthenticated() && req.user.type=="Farmer") {
+    if (req.isAuthenticated() && req.user.type == "Farmer") {
         res.render("create_post");
     }
 });
 
-app.post('/create', upload.single('image') , function (req, res) {
+app.post('/create', upload.single('image'), function (req, res) {
     if (req.isAuthenticated() && req.user.type === "Farmer") {
         console.log(req.file);
         var newPost = {
@@ -124,29 +123,30 @@ app.post('/create', upload.single('image') , function (req, res) {
         };
         //console.log(newPost);
         Post.create(newPost, function (err, post) {
-            if (err)
-                console.log(err);
+            if (err) {
+                res.render("create_post", {flag: 0});
+            }
             else {
                 console.log(post)
                 req.user.posts.push(post);
                 req.user.save();
+                res.render("create_post", { flag: 1 });
             }
         });
-        res.render("create_post");
     }
 });
 
 //PRODUCTS PAGE
-app.get('/products', async (req, res)=>{
+app.get('/products', async (req, res) => {
     if (!req.isAuthenticated()) {
         res.render("register.ejs");
     }
     else {
         let products = await Post.find();
         // res.send(products)
-        res.render("products.ejs",{
-        products: products
-    })
+        res.render("products.ejs", {
+            products: products
+        })
     }
 
 })

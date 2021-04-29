@@ -1,4 +1,4 @@
-﻿var mongoose = require('mongoose');
+var mongoose = require('mongoose');
 var passportLocalMongoose = require('passport-local-mongoose');
 
 var postSchema = new mongoose.Schema({
@@ -18,7 +18,7 @@ var postSchema = new mongoose.Schema({
         name: String
     }
 });
-// postSchema.plugin(passportLocalMongoose);
+
 var Post = mongoose.model('Post', postSchema);
 
 module.exports = Post;

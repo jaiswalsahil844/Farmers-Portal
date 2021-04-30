@@ -36,6 +36,10 @@
         </div>
     </nav>
 
+    <% if (typeof flag != 'undefined' && flag==1) { %>
+        <p class="p-3 mb-2 bg-danger text-light">Invalid Email/Password</p>
+    <% } %>
+
     <div class="container">
         <form action="/login" method="POST">
             <div class="row pt-5">

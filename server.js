@@ -63,14 +63,6 @@ app.get('/login', function (req, res) {
     }
 });
 
-// CHECKING IF LOGIN IS SUCCESS OR NOT
-app.post('/login', passport.authenticate("local", {
-    successRedirect: "/index",
-    failureRedirect: "/login"
-}), function (req, res) {
-        console.log("HELLO");
-});
-
 app.post('/register', function (req, res) {
     User.register(
         {
@@ -200,6 +192,25 @@ app.get("/profile", async (req, res)=>{
     })
 
 })
+
+// CHECKING IF LOGIN IS SUCCESS OR NOT
+app.post('/login', passport.authenticate("local", {
+    successRedirect: "/index",
+    failureRedirect: "/login_error"
+}), function (req, res) {
+        console.log("HELLO");
+});
+
+// LOGIN ERROR
+app.get('/login_error', function (req, res) {
+    if (!req.isAuthenticated()) {
+        res.render("login", {flag: 1});
+    }
+    else {
+        res.redirect('/index');
+    }
+});
+
 
 http.listen(3000, function () {
     console.log('listening on : 3000');

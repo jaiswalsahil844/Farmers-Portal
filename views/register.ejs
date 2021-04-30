@@ -38,6 +38,10 @@
         </div>
     </nav>
 
+    <% if (typeof flag != 'undefined' && flag==1) { %>
+        <p class="p-3 mb-2 bg-danger text-light">Email is already used</p>
+    <% } %>
+
     <div class="container">
         <form action="/register" method="POST">
             <div class="row pt-4" style="background-image: none;">

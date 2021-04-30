@@ -157,7 +157,7 @@ app.get('/products', async (req, res) => {
     else {
         let products = await Post.find();
         // res.send(products)
-        res.render("products.ejs", {
+        res.render("buyer_products.ejs", {
             products: products
         })
     }

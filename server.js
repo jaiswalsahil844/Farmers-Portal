@@ -13,6 +13,8 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo');
 var Cart = require('./models/cart.js');
 
+const stripe = require("stripe")("sk_test_MgFRWqSGP7RlXOY2Tn7fs1V900KzGb6WvH");
+
 app.set('view engine', 'ejs');
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -253,6 +255,47 @@ app.get('/remove-from-cart/:id', function (req, res) {
         }
     });
 });
+
+
+const calculateOrderAmount = amount => {
+    
+    return 10000;
+};
+
+app.post("/create-payment-intent", async (req, res) => {
+    const { amount } = req.body;
+    // Create a PaymentIntent with the order amount and currency
+    console.log(amount);
+    const paymentIntent = await stripe.paymentIntents.create({
+        amount: calculateOrderAmount(amount),
+        currency: "inr"
+    });
+
+    res.send({
+        clientSecret: paymentIntent.client_secret
+    });
+
+});
+
+app.get('/cart/payment', (req, res) => {
+    res.render("checkout.ejs");
+});
+
+app.get("/cart", async (req, res) => {
+    let cart = req.session.cart;
+    console.log(cart);
+
+    let products = [];
+    for (let i = 0; i < cart.items.length; i++) {
+        let product = await Post.findById(cart.items[i]);
+        console.log(product);
+        products.push(product);
+    }
+    res.render("cart.ejs", {
+        products: products,
+    });
+});
+
 
 
 http.listen(3000, function () {

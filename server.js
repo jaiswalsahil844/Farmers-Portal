@@ -10,8 +10,6 @@ var passportLocalMongoose = require("passport-local-mongoose");
 var multer = require("multer");
 var upload = multer({ dest: "uploads/" });
 var session = require("express-session");
-var MongoStore = require("connect-mongo");
-var Cart = require("./models/cart.js");
 
 app.set("view engine", "ejs");
 
@@ -21,21 +19,11 @@ app.use(
     session({
         secret: "finish your work",
         resave: false,
-        saveUninitialized: false,
-        store: MongoStore.create({
-            mongoUrl:
-                "mongodb+srv://sohail:pokemon@cluster0.bvvzh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-        }),
-        cookie: { maxAge: 180 * 60 * 1000 }
+        saveUninitialized: false
     })
 );
 app.use(passport.initialize());
 app.use(passport.session());
-app.use(function (req, res, next) {
-    res.locals.session = req.session;
-    next();
-});
-
 var http = require("http").createServer(app);
 
 passport.use(new LocalStrategy(User.authenticate()));
@@ -160,8 +148,7 @@ app.get("/products", async (req, res) => {
         // res.send(products)
         res.render("buyer_products.ejs", {
             products: products,
-            flag: (req.session.cart !== undefined && req.session.cart.userCart[req.user._id] !== undefined) ? 1 : 0,
-            cart: (req.session.cart !== undefined && req.session.cart.userCart[req.user._id] !== undefined) ? req.session.cart.userCart[req.user._id] : undefined
+            cart: req.user.cart
         });
     }
 });
@@ -223,13 +210,12 @@ app.get("/login_error", function (req, res) {
 // ADD TO CART
 app.get("/add-to-cart/:id", function (req, res) {
     var productId = req.params.id;
-    var cart = new Cart(req.session.cart);
     Post.findById(productId, function (err, product) {
         if (err) console.log(err);
         else {
-            cart.add(req.user._id, product.id);
-            req.session.cart = cart;
-            console.log(cart);
+            req.user.cart.push(productId);
+            req.user.save();
+            console.log(req.user.cart);
             res.redirect("/products");
         }
     });
@@ -238,30 +224,52 @@ app.get("/add-to-cart/:id", function (req, res) {
 // REMOVE FROM CART
 app.get("/remove-from-cart/:id", function (req, res) {
     var productId = req.params.id;
-    var cart = new Cart(req.session.cart ? req.session.cart : {});
     Post.findById(productId, function (err, product) {
         if (err) console.log(err);
         else {
-            cart.remove(req.user._id, product.id);
-            req.session.cart = cart;
-            console.log(cart);
-            res.redirect("/products");
+            let index = req.user.cart.indexOf(productId);
+            if (index >= 0) {
+                req.user.cart.splice(index, 1);
+            }
+            req.user.save();
+            req.user.save(function () {
+                console.log(req.user.cart);
+                res.redirect("/products/");
+            });
+        }
+    });
+});
+
+// REMOVE FROM CART FROM CART_PAGE
+app.get("/cart/:id", function (req, res) {
+    var productId = req.params.id;
+    Post.findById(productId, function (err, product) {
+        if (err) console.log(err);
+        else {
+            let index = req.user.cart.indexOf(productId);
+            if (index >= 0) {
+                req.user.cart.splice(index, 1);
+            }
+            req.user.save(function () {
+                console.log(req.user.cart);
+                res.redirect("/cart/");
+            });
+            
         }
     });
 });
 
 app.get("/cart", async (req, res) => {
-    let cart = req.session.cart;
+    let cart = req.user.cart;
     console.log(cart);
 
     let products = [];
-    for (let i = 0; i < cart.items.length; i++) {
-        let product = await Post.findById(cart.items[i]);
-        console.log(product);
+    for (let i = 0; i < cart.length; i++) {
+        let product = await Post.findById(cart[i]);
         products.push(product);
     }
     res.render("cart.ejs", {
-        products: products,
+        products: products
     });
 });
 

@@ -15,7 +15,8 @@ var userSchema = new mongoose.Schema({
             type: mongoose.Schema.Types.ObjectId,
             ref: "Post"
         }
-    ]
+    ],
+    cart: []
 });
 userSchema.plugin(passportLocalMongoose);
 var User = mongoose.model('User', userSchema);

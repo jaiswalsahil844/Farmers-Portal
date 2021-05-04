@@ -41,7 +41,7 @@
                 </li>
             </ul>
             <span class="navbar-text">
-                <a class="nav-link text-primary" href="/cart">Cart <span class="badge badge-secondary"><%= (flag == 1)?cart.totalQty:0; %></span></a>
+                <a class="nav-link text-primary" href="/cart">Cart <span class="badge badge-secondary"><%= cart.length %></span></a>
             </span>
             <span class="navbar-text">
                 <a class="nav-link text-primary" href="/profile">Profile</a>
@@ -78,7 +78,7 @@
                         </div>
                         <p class="card-text"><%= products[i].description %></p>
                         <a href="#" class="card-link">Buy</a>
-                        <% if( flag == 1 && cart.items.includes(products[i]._id.toString())) { %>
+                        <% if( cart.includes(products[i]._id.toString())) { %>
                         <a href="/remove-from-cart/<%= products[i]._id %>" class="card-link">Remove from cart</a>
                         <% } else { %>
                         <a href="/add-to-cart/<%= products[i]._id %>" class="card-link">Add to cart</a>

@@ -24,9 +24,9 @@ app.use(
         saveUninitialized: false,
         store: MongoStore.create({
             mongoUrl:
-                "mongodb+srv://sohail:pokemon@cluster0.bvvzh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+                "mongodb+srv://sohail:pokemon@cluster0.bvvzh.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
         }),
-        cookie: { maxAge: 180 * 60 * 1000 },
+        cookie: { maxAge: 180 * 60 * 1000 }
     })
 );
 app.use(passport.initialize());
@@ -51,12 +51,12 @@ mongoose.connect(
 app.get("/", (req, res) => {
     if (!req.isAuthenticated()) {
         // res.render("register.ejs");
-        res.redirect("/index");
+        res.render("index");
     } else {
         if (req.user.type == "Farmer") {
-            res.redirect("/index_farmer");
+            res.render("index_farmer");
         } else {
-            res.redirect("/index_buyer");
+            res.render("index_buyer");
         }
     }
 });
@@ -160,6 +160,8 @@ app.get("/products", async (req, res) => {
         // res.send(products)
         res.render("buyer_products.ejs", {
             products: products,
+            flag: (req.session.cart !== undefined && req.session.cart.userCart[req.user._id] !== undefined) ? 1 : 0,
+            cart: (req.session.cart !== undefined && req.session.cart.userCart[req.user._id] !== undefined) ? req.session.cart.userCart[req.user._id] : undefined
         });
     }
 });
@@ -221,11 +223,11 @@ app.get("/login_error", function (req, res) {
 // ADD TO CART
 app.get("/add-to-cart/:id", function (req, res) {
     var productId = req.params.id;
-    var cart = new Cart(req.session.cart ? req.session.cart : {});
+    var cart = new Cart(req.session.cart);
     Post.findById(productId, function (err, product) {
         if (err) console.log(err);
         else {
-            cart.add(product.id);
+            cart.add(req.user._id, product.id);
             req.session.cart = cart;
             console.log(cart);
             res.redirect("/products");
@@ -240,7 +242,7 @@ app.get("/remove-from-cart/:id", function (req, res) {
     Post.findById(productId, function (err, product) {
         if (err) console.log(err);
         else {
-            cart.remove(product.id);
+            cart.remove(req.user._id, product.id);
             req.session.cart = cart;
             console.log(cart);
             res.redirect("/products");

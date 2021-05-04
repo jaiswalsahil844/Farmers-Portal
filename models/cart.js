@@ -1,22 +1,24 @@
 module.exports = function Cart(oldCart) {
-    this.items = oldCart.items || [];
-    this.totalQty = oldCart.totalQty || 0;
 
-    this.add = function (id) {
-        this.items.push(id);
-        this.totalQty++;
+    this.userCart = (oldCart == undefined) ? {} : oldCart.userCart;
+
+    this.add = function (userid, id) {
+        if (this.userCart[userid] === undefined) {
+            this.userCart[userid] = {
+                items: [],
+                totalQty: 0
+            };
+        }
+        this.userCart[userid].items.push(id);
+        this.userCart[userid].totalQty++;
     };
 
-    this.remove = function (id) {
-        var index = this.items.indexOf(id);
+    this.remove = function (userid, id) {
+        var index = this.userCart[userid].items.indexOf(id);
         if (index >= 0) {
-            this.items.splice(index, 1);
-            this.totalQty--;
+            this.userCart[userid].items.splice(index, 1);
+            this.userCart[userid].totalQty--;
         }
-    }
-
-    this.generateArray = function () {
-        return this.items;
     };
 
 };

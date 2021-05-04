@@ -35,7 +35,7 @@
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Farmer | Buyer</a>
+        <a class="navbar-brand" href="#"><%=user[0].type%></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
             aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -80,11 +80,15 @@
             
                               
                               <div class="row">
-                                  <div class="col-md-6"><h6><h6 class="card-subtitle mb-2 text-muted"><b><%= products[i].quantity %></b> <%= products[i].quantity_unit %></h6></h6></div>
-                                  <div class="col-md-6"><h6><h6 class="card-subtitle mb-2 text-muted"><b><%= products[i].price %></b> <%= products[i].price_unit %></h6></h6></div>
-                                </div>
-                              <p class="card-text"><%= products[i].description %></p>
-                              Quantity <input type="number" name="" id="" class="w-25"> 
+                                <div class="col-md-6"><h6><h6 class="card-subtitle mb-2 text-muted"><b><%= products[i].quantity %></b> <%= products[i].quantity_unit %></h6></h6></div>
+                                
+                                <div class="col-md-6"><h6><h6 class="card-subtitle mb-2 text-muted"><b id="unit_price<%=i%>"><%= products[i].price %> </b><%= products[i].price_unit %></h6></h6></div>
+                            </div>
+                            <p class="card-text"><%= products[i].description %></p>
+                            Quantity <input type="number" name="" id="requiredQuantity<%=i%>" min="0" value="0" max="<%= products[i].quantity %>" class="w-25" oninput="calculatePrice(<%=products.length%>)">
+                                
+                              <p id = 'result<%=i%>'></p>                          
+                            
                               <a href="/cart/<%= products[i]._id %>" class="card-link">Remove</a>
                           </div>
                       </div>
@@ -93,6 +97,7 @@
         </div>
     </div>
     <div class="text-center pb-3">
+        <p id="totalCost">Total Cost: Rs.0</p>
         <input type="button" class="btn btn-primary btn-lg" value="Buy Now">
     </div>
     <footer class="container-fluid text-center pt-5">
@@ -110,6 +115,25 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
         integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
         crossorigin="anonymous"></script>
+
+        <script>
+                
+            function calculatePrice(len) {
+                console.log("Hello");
+                var cost = 0;
+                for (let i=0; i<len; i++) {
+                    var requiredQuantity = document.getElementById("requiredQuantity" + i).value;
+                    var unit_price = document.getElementById("unit_price" + i).innerHTML;
+                    cost += requiredQuantity*unit_price;
+                    if (requiredQuantity != 0)
+                        document.getElementById("result" + i).innerHTML= "Cost: Rs." + requiredQuantity*unit_price;
+                    else 
+                        document.getElementById("result" + i).innerHTML="";
+                }
+                document.getElementById("totalCost").innerHTML = "Total Cost: Rs." + cost;
+            }
+            
+        </script>
 </body>
 
 </html>

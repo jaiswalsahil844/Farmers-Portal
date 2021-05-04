@@ -262,14 +262,15 @@ app.get("/cart/:id", function (req, res) {
 app.get("/cart", async (req, res) => {
     let cart = req.user.cart;
     console.log(cart);
-
+    let user = await User.find({ username: req.user.username });
     let products = [];
     for (let i = 0; i < cart.length; i++) {
         let product = await Post.findById(cart[i]);
         products.push(product);
     }
     res.render("cart.ejs", {
-        products: products
+        products: products,
+        user: user
     });
 });
 

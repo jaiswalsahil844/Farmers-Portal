@@ -1,4 +1,5 @@
 var express = require("express");
+const stripe = require("stripe")("sk_test_MgFRWqSGP7RlXOY2Tn7fs1V900KzGb6WvH");
 var mongoose = require("mongoose");
 var bodyParser = require("body-parser");
 var app = express();
@@ -20,6 +21,7 @@ var sharedsession = require("express-socket.io-session");
 
 app.set("view engine", "ejs");
 
+app.use(express.static('.'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
 app.use(session);
@@ -267,6 +269,7 @@ app.get("/cart/:id", function (req, res) {
 app.get("/cart", async (req, res) => {
     let cart = req.user.cart;
     console.log(cart);
+    console.log(req.user.qty);
     let user = await User.find({ username: req.user.username });
     let products = [];
     for (let i = 0; i < cart.length; i++) {
@@ -303,6 +306,54 @@ io.on('connection', function (socket) {
     });
 
 });
+
+// PAYMENT
+// const calculateOrderAmount = amount => {
+    
+//     return amount;
+//   };
+app.post("/create-payment-intent", async (req, res) => {
+    let products = req.user.cart;
+    let quantities = req.user.qty;
+
+    let amount = 0;
+    
+    for(let i=0;i<products.length;i++){
+        let product = await Post.findById(products[i]);
+        let quantity = quantities[i];
+        amount += product.price*quantity;
+    }
+
+    console.log(amount)
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount*100,
+      currency: "inr"
+    });
+    
+    res.send({
+      clientSecret: paymentIntent.client_secret
+    });
+    
+  });
+
+app.get('/payment', async (req,res)=>{
+
+    let products = req.user.cart;
+    let quantities = req.user.qty;
+
+    let amount = 0;
+    
+    for(let i=0;i<products.length;i++){
+        let product = await Post.findById(products[i]);
+        let quantity = quantities[i];
+        amount += product.price*quantity;
+    }
+
+    res.render("checkout.ejs",{
+        amount
+    });
+})
 
 http.listen(3000, function () {
     console.log("listening on : 3000");

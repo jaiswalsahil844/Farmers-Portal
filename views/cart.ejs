@@ -100,7 +100,7 @@
                                 <div class="col-md-6"><h6><h6 class="card-subtitle mb-2 text-muted"><b id="unit_price<%=i%>"><%= products[i].price %> </b><%= products[i].price_unit %></h6></h6></div>
                             </div>
                             <p class="card-text"><%= products[i].description %></p>
-                            Quantity <input type="number" name="" id="<%= products[i]._id %>" min="1" value="<%= qty[i] %>" max="<%= products[i].quantity %>" class="w-25" oninput="onQuantityChange(this.id)">
+                            Quantity <input type="number" name="" id="<%= products[i]._id %>"  min="1" value="<%= qty[i] %>" max="<%= products[i].quantity %>" class="w-25 requiredQuantity<%=i%>" oninput="onQuantityChange(this.id, <%=products.length%>)">
                                 
                               <p id = 'result<%=i%>'></p>                          
                             
@@ -145,18 +145,20 @@
                 console.log("Hello");
                 var cost = 0;
                 for (let i=0; i<len; i++) {
-                    var requiredQuantity = document.getElementById("requiredQuantity" + i).value;
+                    var requiredQuantity = document.getElementsByClassName("requiredQuantity" + i);
                     var unit_price = document.getElementById("unit_price" + i).innerHTML;
-                    cost += requiredQuantity*unit_price;
-                    if (requiredQuantity != 0)
-                        document.getElementById("result" + i).innerHTML= "Cost: Rs." + requiredQuantity*unit_price;
+                    cost += requiredQuantity[0].value*unit_price;
+                    if (requiredQuantity[0].value != 0)
+                        document.getElementById("result" + i).innerHTML= "Cost: Rs." + requiredQuantity[0].value*unit_price;
                     else 
                         document.getElementById("result" + i).innerHTML="";
                 }
                 document.getElementById("totalCost").innerHTML = "Total Cost: Rs." + cost;
             }
 
-            function onQuantityChange(clicked_id) {
+            function onQuantityChange(clicked_id, len) {
+                calculatePrice(len);
+
                 var socket = io();
                 var element = document.getElementById(clicked_id);
                 console.log("work");

@@ -9,22 +9,24 @@ var LocalStrategy = require("passport-local");
 var passportLocalMongoose = require("passport-local-mongoose");
 var multer = require("multer");
 var upload = multer({ dest: "uploads/" });
-var session = require("express-session");
+var session = require("express-session")({
+    secret: "my-secret",
+    resave: true,
+    saveUninitialized: true
+});
+var http = require("http").createServer(app);
+var io = require('socket.io')(http);
+var sharedsession = require("express-socket.io-session");
 
 app.set("view engine", "ejs");
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + "/public"));
-app.use(
-    session({
-        secret: "finish your work",
-        resave: false,
-        saveUninitialized: false
-    })
-);
+app.use(session);
 app.use(passport.initialize());
 app.use(passport.session());
-var http = require("http").createServer(app);
+
+io.use(sharedsession(session));
 
 passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
@@ -71,7 +73,7 @@ app.post("/register", function (req, res) {
             phoneNumber: req.body.phoneNumber,
             address: req.body.address,
             dob: req.body.dob,
-            type: req.body.type,
+            type: req.body.type
         },
         req.body.password,
         function (err, user) {
@@ -214,9 +216,10 @@ app.get("/add-to-cart/:id", function (req, res) {
         if (err) console.log(err);
         else {
             req.user.cart.push(productId);
-            req.user.save();
-            console.log(req.user.cart);
-            res.redirect("/products");
+            req.user.qty.push(1);
+            req.user.save(function () {
+                res.redirect("/products");
+            });
         }
     });
 });
@@ -230,6 +233,7 @@ app.get("/remove-from-cart/:id", function (req, res) {
             let index = req.user.cart.indexOf(productId);
             if (index >= 0) {
                 req.user.cart.splice(index, 1);
+                req.user.qty.splice(index, 1);
             }
             req.user.save();
             req.user.save(function () {
@@ -249,6 +253,7 @@ app.get("/cart/:id", function (req, res) {
             let index = req.user.cart.indexOf(productId);
             if (index >= 0) {
                 req.user.cart.splice(index, 1);
+                req.user.qty.splice(index, 1);
             }
             req.user.save(function () {
                 console.log(req.user.cart);
@@ -270,8 +275,33 @@ app.get("/cart", async (req, res) => {
     }
     res.render("cart.ejs", {
         products: products,
-        user: user
+        user: user,
+        qty: req.user.qty
     });
+});
+
+io.on('connection', function (socket) {
+    console.log("connected");
+    socket.on('to-server', function (data) {
+        User.findOne({ username: socket.handshake.session.passport.user }, function (err, user) {
+            if (err)
+                console.log(err);
+            else {
+                let index = user.cart.indexOf(data.id);
+                user.qty[index] = parseInt(data.value);
+                User.update({ username: socket.handshake.session.passport.user }, { $set: user }, function (err, updatedUser) {
+                    if (err)
+                        console.log(err);
+                    else {
+                        //console.log(updatedUser);
+                        io.emit('to-client', {});
+                    }
+                });
+            }
+              
+        });
+    });
+
 });
 
 http.listen(3000, function () {

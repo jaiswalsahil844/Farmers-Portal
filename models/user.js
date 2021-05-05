@@ -16,6 +16,7 @@ var userSchema = new mongoose.Schema({
             ref: "Post"
         }
     ],
+    qty: [],
     cart: []
 });
 userSchema.plugin(passportLocalMongoose);

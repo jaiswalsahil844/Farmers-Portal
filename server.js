@@ -145,14 +145,17 @@ app.post("/create", upload.single("image"), function (req, res) {
 
 //PRODUCTS PAGE
 app.get("/products", async (req, res) => {
+
     if (!req.isAuthenticated()) {
         res.render("register.ejs");
     } else {
+        let user = await User.find({ username: req.user.username });
         let products = await Post.find();
         // res.send(products)
         res.render("buyer_products.ejs", {
             products: products,
-            cart: req.user.cart
+            cart: req.user.cart,
+            user: user
         });
     }
 });
@@ -175,6 +178,7 @@ app.get("/myproducts", async (req, res) => {
         // res.send(products)
         res.render("products.ejs", {
             products: products,
+            user: user
         });
     }
 });

@@ -24,9 +24,13 @@
 
     <style>
         footer {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
             background-color: #555;
             color: white;
-            padding: 50px;
+            text-align: center;
         }
     </style>
     <title>View Products</title>
@@ -35,7 +39,7 @@
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="#">Farmer | Buyer</a>
+        <a class="navbar-brand" href="#"><%=user[0].type%></a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
             aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>

@@ -283,6 +283,23 @@ app.get("/cart", async (req, res) => {
     });
 });
 
+app.get("/add-and-buy/:id", function (req, res) {
+    var productId = req.params.id;
+    Post.findById(productId, function (err, product) {
+        if (err) console.log(err);
+        else {
+            req.user.cart = []
+            req.user.cart.push(productId);
+
+            req.user.qty = []
+            req.user.qty.push(1);
+            req.user.save(function () {
+                res.redirect("/cart");
+            });
+        }
+    });
+});
+
 io.on('connection', function (socket) {
     console.log("connected");
     socket.on('to-server', function (data) {

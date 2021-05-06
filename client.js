@@ -71,7 +71,20 @@ function result(){
         } else {
           // The payment succeeded!
           // window.location = "http://localhost:4000/wallet";
+
+          fetch("http://localhost:3000/update-cart", {
+      
+    // Adding method type
+    method: "POST",
+      
+    // Adding headers to the request
+    headers: {
+        "Content-type": "application/json; charset=UTF-8"
+    }
+})
+
           alert("Payment Successful!")
+
           orderComplete(result.paymentIntent.id);
         }
       });

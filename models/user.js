@@ -17,7 +17,8 @@ var userSchema = new mongoose.Schema({
         }
     ],
     qty: [],
-    cart: []
+    cart: [],
+    orders:[]
 });
 userSchema.plugin(passportLocalMongoose);
 var User = mongoose.model('User', userSchema);

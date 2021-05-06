@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"></script>
+
+    <script>
+
+    </script>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
+    <style>
+        
+        footer {
+            position: relative;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            background-color:  #555;
+            color: white;
+            text-align: center;
+            padding: 50px;
+        }
+    </style>
+    <title>Orders Buyer</title>
+</head>
+
+<body>`
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">Buyer</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">About</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container pt-5">
+        <table class="table table-bordered text-center">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Order ID</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">1</th>
+                <td><input type="button" value="XYZ" onclick="flip(w)"></td>
+              </tr>
+              <tr>
+                <th scope="row">2</th>
+                <td><input type="button" value="ABC" onclick="flip(x)"></td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td><input type="button" value="UIO" onclick="flip(y)"></td>
+              </tr>
+              <tr>
+                <th scope="row">3</th>
+                <td><input type="button" value="GHF" onclick="flip(z)"></td>
+              </tr>
+            </tbody>
+          </table>
+    </div>
+
+    <div class="container mt-4">
+        <div class="row">
+            <div id="w" class="col-auto mb-3" style="display: none;">
+                <div class="card" style="width: 18rem;">
+                  <img class="card-img-top" src="https://media.nationalgeographic.org/assets/photos/120/983/091a0e2f-b93d-481b-9a60-db520c87ec33.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">category1</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">price1</h6>
+                        <p class="card-text">description1</p>
+                    </div>
+                </div>
+            </div>
+            <div id="x" class="col-auto mb-3" style="display: none;">
+                <div class="card" style="width: 18rem;">
+                  <img class="card-img-top" src="https://media.nationalgeographic.org/assets/photos/120/983/091a0e2f-b93d-481b-9a60-db520c87ec33.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">category2</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">price2</h6>
+                        <p class="card-text">description2</p>
+                    </div>
+                </div>
+            </div>
+            <div id="y" class="col-auto mb-3" style="display: none;">
+                <div class="card" style="width: 18rem;">
+                  <img class="card-img-top" src="https://media.nationalgeographic.org/assets/photos/120/983/091a0e2f-b93d-481b-9a60-db520c87ec33.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">category3</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">price3</h6>
+                        <p class="card-text">description3</p>
+                    </div>
+                </div>
+            </div>
+            <div id="z" class="col-auto mb-3" style="display: none;">
+                <div class="card" style="width: 18rem;">
+                  <img class="card-img-top" src="https://media.nationalgeographic.org/assets/photos/120/983/091a0e2f-b93d-481b-9a60-db520c87ec33.jpg" alt="Card image cap">
+                    <div class="card-body">
+                        <h5 class="card-title">category4</h5>
+                        <h6 class="card-subtitle mb-2 text-muted">price4</h6>
+                        <p class="card-text">description4</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <footer class="container-fluid text-center pt-5">
+        <p>Text placeholders courtesy of <a href="#">Farmer</a></p>
+    </footer>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+        <script>
+            function flip(id) {
+                console.log(id.style.display)
+                if(id.style.display === "none")
+                    id.style.display = "block";
+                else
+                    id.style.display = "none";
+            }
+        </script>
+</body>
+
+</html>

@@ -146,14 +146,17 @@ app.post("/create", upload.single("image"), function (req, res) {
 
 //PRODUCTS PAGE
 app.get("/products", async (req, res) => {
+
     if (!req.isAuthenticated()) {
         res.render("register.ejs");
     } else {
+        let user = await User.find({ username: req.user.username });
         let products = await Post.find();
         // res.send(products)
         res.render("buyer_products.ejs", {
             products: products,
-            cart: req.user.cart
+            cart: req.user.cart,
+            user: user
         });
     }
 });
@@ -176,6 +179,7 @@ app.get("/myproducts", async (req, res) => {
         // res.send(products)
         res.render("products.ejs", {
             products: products,
+            user: user
         });
     }
 });
@@ -298,6 +302,23 @@ app.get("/cart", async (req, res) => {
         products: products,
         user: user,
         qty: req.user.qty
+    });
+});
+
+app.get("/add-and-buy/:id", function (req, res) {
+    var productId = req.params.id;
+    Post.findById(productId, function (err, product) {
+        if (err) console.log(err);
+        else {
+            req.user.cart = []
+            req.user.cart.push(productId);
+
+            req.user.qty = []
+            req.user.qty.push(1);
+            req.user.save(function () {
+                res.redirect("/cart");
+            });
+        }
     });
 });
 

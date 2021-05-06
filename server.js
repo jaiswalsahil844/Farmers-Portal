@@ -18,6 +18,7 @@ var session = require("express-session")({
 var http = require("http").createServer(app);
 var io = require('socket.io')(http);
 var sharedsession = require("express-socket.io-session");
+const { Console } = require("console");
 
 app.set("view engine", "ejs");
 
@@ -226,6 +227,23 @@ app.get("/add-to-cart/:id", function (req, res) {
     });
 });
 
+app.get("/add-and-buy/:id", function (req, res) {
+    var productId = req.params.id;
+    Post.findById(productId, function (err, product) {
+        if (err) console.log(err);
+        else {
+            req.user.cart = []
+            req.user.cart.push(productId);
+
+            req.user.qty = []
+            req.user.qty.push(1);
+            req.user.save(function () {
+                res.redirect("/payment");
+            });
+        }
+    });
+});
+
 // REMOVE FROM CART
 app.get("/remove-from-cart/:id", function (req, res) {
     var productId = req.params.id;
@@ -312,19 +330,56 @@ io.on('connection', function (socket) {
     
 //     return amount;
 //   };
+
+function makeid(length) {
+    var result           = [];
+    var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var charactersLength = characters.length;
+    for ( var i = 0; i < length; i++ ) {
+      result.push(characters.charAt(Math.floor(Math.random() * 
+ charactersLength)));
+   }
+   return result.join('');
+}
+
+//UPDATE CART
+app.post("/update-cart", async(req,res)=>{
+    let products = req.user.cart;
+    let quantities = req.user.qty;
+
+    let order = {};
+    order["order_id"] = makeid(5);
+    order["products"] = [];
+    order["quantities"] = quantities;
+    for(let i=0;i<products.length;i++){
+        let product = await Post.findById(products[i]);
+        order["products"].push(product);
+    }
+    
+    req.user.orders.push(order)
+
+    User.findByIdAndUpdate(req.user._id, {orders:req.user.orders},
+        function (err, docs) {
+            if (err){
+            console.log(err)
+            }
+            else{
+                console.log("Updated User : ", docs);
+            }
+        });
+    })
+
 app.post("/create-payment-intent", async (req, res) => {
     let products = req.user.cart;
     let quantities = req.user.qty;
 
     let amount = 0;
-    
+
     for(let i=0;i<products.length;i++){
         let product = await Post.findById(products[i]);
         let quantity = quantities[i];
         amount += product.price*quantity;
     }
-
-    console.log(amount)
 
     const paymentIntent = await stripe.paymentIntents.create({
       amount: amount*100,

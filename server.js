@@ -358,37 +358,77 @@ function makeid(length) {
     var charactersLength = characters.length;
     for ( var i = 0; i < length; i++ ) {
       result.push(characters.charAt(Math.floor(Math.random() * 
- charactersLength)));
+        charactersLength)));
    }
    return result.join('');
 }
 
 //UPDATE CART
 app.post("/update-cart", async(req,res)=>{
-    let products = req.user.cart;
-    let quantities = req.user.qty;
 
-    let order = {};
-    order["order_id"] = makeid(5);
-    order["products"] = [];
-    order["quantities"] = quantities;
-    for(let i=0;i<products.length;i++){
-        let product = await Post.findById(products[i]);
-        order["products"].push(product);
+    if (!req.isAuthenticated()) {
+        res.render("index");
+    } else {
+        if (req.user.type == "Buyer") {
+
+            let products = req.user.cart;
+            let quantities = req.user.qty;
+
+            let order = {};
+            order["order_id"] = makeid(5);
+            order["products"] = [];
+            order["quantities"] = quantities;
+            for(let i=0;i<products.length;i++){
+                let product = await Post.findById(products[i]);
+                let dp = {...product};
+                let dummyProduct = dp._doc;
+                dummyProduct["buyer"] = req.user.username;
+                dummyProduct["quantity_bought"] = quantities[i];
+                dummyProduct["price_bought"] = product.price;
+                order["products"].push(product);
+
+                let farmer = await User.findById(product.author.id)
+
+                farmer.orders.push(dummyProduct);
+                farmer.save();
+            }
+
+            req.user.orders.push(order)
+
+            User.findByIdAndUpdate(req.user._id, {orders:req.user.orders},
+                function (err, docs) {
+                    if (err){
+                    console.log(err)
+                    }
+                    else{
+                        console.log("Updated User : ", docs);
+                    }
+            });
+        }
     }
     
-    req.user.orders.push(order)
+})
 
-    User.findByIdAndUpdate(req.user._id, {orders:req.user.orders},
-        function (err, docs) {
-            if (err){
-            console.log(err)
-            }
-            else{
-                console.log("Updated User : ", docs);
-            }
-        });
-    })
+// VIEW ORDERS
+app.get("/orders", async(req, res)=>{
+
+    if (!req.isAuthenticated()) {
+        // res.render("register.ejs");
+        res.render("index");
+    } else {
+        let orders = req.user.orders;
+        if (req.user.type == "Farmer") {
+            res.send({
+                orders
+            })
+        } else {
+            res.send({
+                orders
+            })
+        }
+    }
+
+})
 
 app.post("/create-payment-intent", async (req, res) => {
     let products = req.user.cart;

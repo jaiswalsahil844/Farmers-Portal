@@ -471,6 +471,30 @@ app.get('/payment', async (req,res)=>{
     });
 })
 
+// Remove item from my products page
+app.get("/removeFromMyProducts/:id", async (req, res) => {
+    let productId = req.params.id;
+    Post.findById(productId, async (err, product) => {
+        if (err) console.log(err);
+        else {
+	     let user = await User.find({ username: req.user.username });
+            let product = Post.findById(productId);
+            let index=req.user.posts.indexOf(productId);
+            req.user.posts.splice(index, 1 );
+            req.user.save();
+            res.redirect("/myproducts");  
+        }
+    });
+    Post.findByIdAndDelete(productId, function (err, docs) {
+        if (err){
+            console.log(err)
+        }
+        else{
+            console.log("Deleted : ", docs);
+        }
+    });  
+});
+
 http.listen(3000, function () {
     console.log("listening on : 3000");
 });

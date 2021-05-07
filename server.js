@@ -418,11 +418,11 @@ app.get("/orders", async(req, res)=>{
     } else {
         let orders = req.user.orders;
         if (req.user.type == "Farmer") {
-            res.send({
+            res.render('/orders_farmer', {
                 orders
             })
         } else {
-            res.send({
+            res.render('/orders_buyer', {
                 orders
             })
         }
@@ -493,6 +493,28 @@ app.get("/removeFromMyProducts/:id", async (req, res) => {
             console.log("Deleted : ", docs);
         }
     });  
+});
+
+//EDit item from my products page
+app.get("/editFromMyProducts/:id", async (req, res) => {
+
+    let productId = req.params.id;
+    
+ Post.findById(productId, async (err, product) => {
+      if (err) console.log(err);
+       else {
+	     let user = await User.find({ username: req.user.username });
+          let product =await Post.findById(productId);
+          console.log('sahil raj');
+          console.log(product);
+          res.render("edit_post.ejs", {
+            product : product,
+            user : user
+             }); 
+    }
+        
+    }); 
+
 });
 
 http.listen(3000, function () {

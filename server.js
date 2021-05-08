@@ -438,11 +438,11 @@ app.get("/orders", async(req, res)=>{
     } else {
         let orders = req.user.orders;
         if (req.user.type == "Farmer") {
-            res.render('/orders_farmer', {
+            res.render('orders_farmer', {
                 orders
             })
         } else {
-            res.render('/orders_buyer', {
+            res.render('orders_buyer', {
                 orders
             })
         }

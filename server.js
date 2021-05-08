@@ -387,23 +387,43 @@ app.post("/update-cart", async(req,res)=>{
                 dummyProduct["price_bought"] = product.price;
                 order["products"].push(product);
 
-                let farmer = await User.findById(product.author.id)
+                let newQuantity = product.quantity - quantities[i];
+                let farmer = await User.findById(product.author.id);
 
+                if(newQuantity == 0){
+                    let index = farmer.posts.indexOf(product._id);
+                    console.log("index", index);
+                    if (index >= 0) {
+                        farmer.posts.splice(index, 1);
+                    }
+                    console.log(farmer.posts);
+                    await product.remove();
+                }
+                else{
+                    let newP = await product.update({quantity: newQuantity});
+                    console.log(newP)
+                }
+                
                 farmer.orders.push(dummyProduct);
                 farmer.save();
+                console.log(farmer.posts);
             }
 
             req.user.orders.push(order)
 
-            User.findByIdAndUpdate(req.user._id, {orders:req.user.orders},
-                function (err, docs) {
-                    if (err){
-                    console.log(err)
-                    }
-                    else{
-                        console.log("Updated User : ", docs);
-                    }
-            });
+            // User.findByIdAndUpdate(req.user._id, {orders:req.user.orders},
+            //     function (err, docs) {
+            //         if (err){
+            //         console.log(err)
+            //         }
+            //         else{
+            //             console.log("Updated User : ", docs);
+            //         }
+            // });
+
+            req.user.cart = [];
+            req.user.qty = [];
+            req.user.save();
         }
     }
     

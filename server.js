@@ -403,7 +403,7 @@ app.post("/update-cart", async(req,res)=>{
                     let newP = await product.update({quantity: newQuantity});
                     console.log(newP)
                 }
-
+                
                 farmer.orders.push(dummyProduct);
                 farmer.save();
                 console.log(farmer.posts);

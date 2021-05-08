@@ -83,7 +83,8 @@ function result(){
     }
 })
 
-          alert("Payment Successful!")
+          // alert("Payment Successful!")
+          window.location = "http://localhost:3000/orders";
 
           orderComplete(result.paymentIntent.id);
         }

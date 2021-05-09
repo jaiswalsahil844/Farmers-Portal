@@ -230,7 +230,7 @@ app.get("/add-to-cart/:id", function (req, res) {
         }
     });
 });
-
+/*
 app.get("/add-and-buy/:id", function (req, res) {
     var productId = req.params.id;
     Post.findById(productId, function (err, product) {
@@ -247,6 +247,7 @@ app.get("/add-and-buy/:id", function (req, res) {
         }
     });
 });
+*/
 
 // REMOVE FROM CART
 app.get("/remove-from-cart/:id", function (req, res) {
@@ -535,6 +536,39 @@ app.get("/editFromMyProducts/:id", async (req, res) => {
         
     }); 
 
+});
+
+app.post("/editFromMyProducts/:id",async (req, res) =>  {
+    console.log("Request Starying");
+    //console.log(req.query.quantity);
+    console.log(req.body);
+    //console.log("Hello");
+    var productId = req.params.id;
+    let user = await User.find({ username: req.user.username });
+    console.log("Users Products");
+    console.log(user[0].posts);
+    console.log("passed parameters");
+    console.log(productId);
+    console.log("Updated Quantity");
+    console.log(req.body.quantity);
+    Post.findByIdAndUpdate(productId,  { 
+        
+        quantity: req.body.quantity,
+        description: req.body.description,
+        price : req.body.price
+        },
+        function (err, docs) {
+        if (err){
+            console.log(err)
+        }
+        else{
+            console.log("Updated User : ", docs);
+        }
+    });
+   
+    req.user.save();
+    res.redirect("/myproducts");
+     
 });
 
 http.listen(3000, function () {

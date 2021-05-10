@@ -53,7 +53,7 @@
         <div class="collapse navbar-collapse" id="navbarText">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Home</a>
+                    <a class="nav-link" href="/index">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Features</a>
@@ -76,7 +76,7 @@
             <tbody>
                 <% for (var i=0; i<orders.length;  i++ ) { %>
                     <tr>
-                        <th scope="row">1</th>
+                        <th scope="row"><%=i+1%></th>
                         <td><input type="button" value="<%=orders[i]._id%>" onclick='flip(<%="a"+i%>)'></td>
                       </tr>
                 <% } %>                    
@@ -113,13 +113,17 @@
                                 
                                 </div>
                                 <div class="row"> 
-                                    <div class="col"><h6><h6 class="card-subtitle mb-2 text-muted"><b>Sold. Qty: <%= orders[i].quantity_bought %></b> <%= orders[i].quantity_unit %></h6></h6></div>
+                                    <div class="col"><h6><h6 class="card-subtitle mb-2 text-muted"><b>Qty Sold: <%= orders[i].quantity_bought %></b> <%= orders[i].quantity_unit %></h6></h6></div>
                                 
                             </div>
                             <div class="row"> 
-                                <div class="col"><h6><h6 class="card-subtitle mb-2 text-muted"><b>Sold. Rs: <%= orders[i].price_bought %></b></h6></h6></div>
+                                <div class="col"><h6><h6 class="card-subtitle mb-2 text-muted"><b>Sold at Rs: <%= orders[i].price_bought %></b></h6></h6></div>
                             
                         </div>
+                        <div class="row"> 
+                            <div class="col"><h6><h6 class="card-subtitle mb-2 text-muted"><b>Total Cost: Rs.<%= orders[i].price_bought*orders[i].quantity_bought %></b></h6></h6></div>
+                        
+                    </div>
 
                             <p class="card-text"><%= orders[i].description %></p>
                             <p class="card-text">Buyer: <%= orders[i].buyer %></p>

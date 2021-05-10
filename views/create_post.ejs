@@ -8,7 +8,7 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
 
     <title>Add Product</title>
 
@@ -23,6 +23,10 @@
             text-align: center;
             padding: 20px;
         }
+
+        body {
+            background-color: bisque;
+        }
     </style>
 </head>
 
@@ -31,7 +35,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="#">Farmer</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
-                aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarText">
@@ -49,122 +53,136 @@
         </div>
     </nav>
 
-    <div class="container pt-4">
+    <div class="container pt-4 pb-4">
 
-        <% if (typeof flag != 'undefined') { %>
-            <% if (flag == 0) { %>
+        <% if (typeof flag !='undefined' ) { %>
+            <% if (flag==0) { %>
                 <p class="p-3 mb-2 bg-danger text-light">Failed</p>
-            <% } %>
-            <% if (flag == 1) { %>
-                <p class="p-3 mb-2 bg-success text-light">Success</p>
-            <% } %>
-        <% } %>
-           
-        <div class="container col-8 pt-6 bg-light text-dark border">
-        <form enctype="multipart/form-data" action="/create" method="POST">
+                <% } %>
+                    <% if (flag==1) { %>
+                        <p class="p-3 mb-2 bg-success text-light">Success</p>
+                        <% } %>
+                            <% } %>
 
-            <div class="input-group mb-6" style="margin-top: 60px; margin-bottom: 60px;">
-                <div style="margin-left: 40%;">
-                    <label class="input-group-text bg-primary " style="color: white;">Add Product</label>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="category" class="col-sm-4 col-form-label">Category</label>
-                <div class="col-sm-8">
-                    <select name="category" class="custom-select" id="select" onchange="yesnoCheck();">
-                        <option selected>Choose...</option>
-                        <option value="Fruits">Fruits</option>
-                        <option value="Vegetables">Vegetables</option>
-                        <option value="Oils">Oils</option>
-                        <option value="Dairy Products">Dairy Products</option>
-                        <option value="Millets">Millets</option>
-                        <option value="None of the above">None of the above</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group row" id="hideField" style="display:none;">
-                <label for="addCategory" class="col-sm-4 col-form-label">Add Category</label>
-                <div class="col-sm-8">
-                    <input name="addCategory" type="text" class="form-control" id="addCategory"
-                           placeholder="Add Category">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="product" class="col-sm-4 col-form-label">Enter Product Name</label>
-                <div class="col-sm-8">
-                    <input name="product" type="text" class="form-control" id="product" placeholder="Product Name">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="quantity" class="col-sm-4 col-form-label">Enter Quantity Available</label>
-                <div class="col-sm-4">
-                    <input name="quantity" type="number" class="form-control" id="quantity" placeholder="Quantity">
-                </div>
-                <div class="col-sm-3">
-                    <select name="quantity_unit" class="custom-select">
-                        <option value="in litres"> in litres </option>
-                        <option value="in kg"> in kg </option>
-                        <option value="in grams"> in grams </option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="address" class="col-sm-4 col-form-label">Enter Price per Unit</label>
-                <div class="col-sm-4">
-                    <input name="price" type="number" class="form-control" id="price" placeholder="Estimated Price">
-                </div>
-                <div class="col-sm-3">
-                    <select name="price_unit" class="custom-select">
-                        <option value="per litre"> per litre </option>
-                        <option value="per kg"> per kg </option>
-                        <option value="per gram"> per gram </option>
-                    </select>
-                </div>
-            </div>
+                                <div class="container col-8 pt-6 bg-light text-dark border">
+                                    <form enctype="multipart/form-data" action="/create" method="POST">
 
-            <div class="form-group row">
-                <label for="description" class="col-sm-4 col-form-label">Enter Description</label>
-                <div class="col-sm-8">
-                    <input name="description" type="text" class="form-control" id="desciption" placeholder="Description">
-                </div>
-            </div>
-            <div class="form-group row">
-                <label for="addImage" class="col-sm-4 col-form-label">Add Image</label>
-                <div class="col-sm-4">
-                    <input type="file" id="addImage" name="image" accept="image/*" onchange="readURL(this);">
-                </div>
-                <div class="col-sm-3">
-                    <img id="blah" />
-                </div>
-            </div>
-                
-            <div class="pt-3 pb-5 row">
-                <div class="col-sm-6">
-                <button name="submit" type="submit" class="btn btn-success btn-block">Add Product</button>
-            </div>
-            <div class="col-sm-6 ">
-                <button name="reset" type="reset" class="btn btn-danger btn-block">Reset</button>
-            </div>
-            </div>
-        </form>
+                                        <div class="input-group mb-6" style="margin-top: 60px; margin-bottom: 60px;">
+                                            <div style="margin-left: 40%;">
+                                                <label class="input-group-text bg-primary " style="color: white;">Add
+                                                    Product</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="category" class="col-sm-4 col-form-label">Category</label>
+                                            <div class="col-sm-8">
+                                                <select name="category" class="custom-select" id="select"
+                                                    onchange="yesnoCheck();">
+                                                    <option selected>Choose...</option>
+                                                    <option value="Fruits">Fruits</option>
+                                                    <option value="Vegetables">Vegetables</option>
+                                                    <option value="Oils">Oils</option>
+                                                    <option value="Dairy Products">Dairy Products</option>
+                                                    <option value="Millets">Millets</option>
+                                                    <option value="None of the above">None of the above</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row" id="hideField" style="display:none;">
+                                            <label for="addCategory" class="col-sm-4 col-form-label">Add
+                                                Category</label>
+                                            <div class="col-sm-8">
+                                                <input name="addCategory" type="text" class="form-control"
+                                                    id="addCategory" placeholder="Add Category">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="product" class="col-sm-4 col-form-label">Enter Product
+                                                Name</label>
+                                            <div class="col-sm-8">
+                                                <input name="product" type="text" class="form-control" id="product"
+                                                    placeholder="Product Name">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="quantity" class="col-sm-4 col-form-label">Enter Quantity
+                                                Available</label>
+                                            <div class="col-sm-4">
+                                                <input name="quantity" type="number" class="form-control" id="quantity"
+                                                    placeholder="Quantity">
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <select name="quantity_unit" class="custom-select">
+                                                    <option value="in litres"> in litres </option>
+                                                    <option value="in kg"> in kg </option>
+                                                    <option value="in grams"> in grams </option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="address" class="col-sm-4 col-form-label">Enter Price per
+                                                Unit</label>
+                                            <div class="col-sm-4">
+                                                <input name="price" type="number" class="form-control" id="price"
+                                                    placeholder="Estimated Price">
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <select name="price_unit" class="custom-select">
+                                                    <option value="per litre"> per litre </option>
+                                                    <option value="per kg"> per kg </option>
+                                                    <option value="per gram"> per gram </option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group row">
+                                            <label for="description" class="col-sm-4 col-form-label">Enter
+                                                Description</label>
+                                            <div class="col-sm-8">
+                                                <input name="description" type="text" class="form-control"
+                                                    id="desciption" placeholder="Description">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="addImage" class="col-sm-4 col-form-label">Add Image</label>
+                                            <div class="col-sm-4">
+                                                <input type="file" id="addImage" name="image" accept="image/*"
+                                                    onchange="readURL(this);">
+                                            </div>
+                                            <div class="col-sm-3">
+                                                <img id="blah" />
+                                            </div>
+                                        </div>
+
+                                        <div class="pt-3 pb-5 row">
+                                            <div class="col-sm-6">
+                                                <button name="submit" type="submit"
+                                                    class="btn btn-success btn-block">Add Product</button>
+                                            </div>
+                                            <div class="col-sm-6 ">
+                                                <button name="reset" type="reset"
+                                                    class="btn btn-danger btn-block">Reset</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
     </div>
-</div>
 
     <footer class="container-fluid text-center pt-5">
-        <p>Text placeholders courtesy of <a href="http://www.trinqet.com/">Farmer</a></p>
+        <p>ONE STOP SHOP FOR FRESH PRODUCTS FROM OUR FARMERS</p>
     </footer>
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-            integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-            crossorigin="anonymous"></script>
+        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
-            integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
-            crossorigin="anonymous"></script>
+        integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-            crossorigin="anonymous"></script>
+        integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
 
     <script>
         function yesnoCheck() {

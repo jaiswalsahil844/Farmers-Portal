@@ -571,10 +571,15 @@ app.post("/editFromMyProducts/:id",async (req, res) =>  {
      
 });
 
-http.listen(3000, function () {
-    console.log("listening on : 3000");
-});
+// http.listen(3000, function () {
+//     console.log("listening on : 3000");
+// });
 
-app.listen(process.env.PORT, process.env.ID, () =>
-    console.log("SERVER RUNNING")
-);
+// app.listen(process.env.PORT, process.env.ID, () =>
+//     console.log("SERVER RUNNING")
+// );
+
+const server = app.listen(process.env.PORT || 3000, () => {
+  const port = server.address().port;
+  console.log(`Express is working on port ${port}`);
+});
